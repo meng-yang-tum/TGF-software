@@ -1,0 +1,169 @@
+************************************************************************************
+                          Quick-Start file for TGF 
+************************************************************************************
+
+% Version 2019-10-30
+%
+% Citation for this work:
+% M. Yang, C. Hirt, R. Pail (2019) TGF: A New MATLAB-based Software for Terrain 
+% Gravity Field Calculation.  Comput. Geosci., under review.
+
+This is the quick start file for the Terrain Gravity Field (TGF) software developed 
+by Meng Yang et al. (2019) at TU Munich. This software can be used for gravity field
+forward modelling of various gravity field functionals using models of topographic
+mass density distributions.
+
+This file provides information for a quick start with the software. We have provided
+test data sets in folders /COM  (containing computation points) and /DEM (containing
+digital elevation models to represent the topographic masses).
+
+The software can be used with the GUI or in batch mode. For both variants we have
+provided ready-to-go examples. Please follow the instructions given below how to run
+these examples.
+
+For more detailed information on the TGF functionalites and settings, the user manual
+file should be consulted.
+
+Meng Yang and Christian Hirt, TU Munich, 2019-10-30
+
+====================================================================================
+                    Structure of the Graphical User Interface (GUI)
+====================================================================================
+- Panel 'Computation Point': import and display the file containing computation
+                           points. 
+       
+          
+- Panel 'Forward Mass': specify and display the input file to define the geometric 
+                      topography through pushbuttons in panels of 'DetailedMasses', 
+            'TessMasses' and 'CoarseMasses'.
+            
+            The checkbox 'idensity' provides the flag of density assumption used  
+            in the forward modelling as follows: 
+            
+            When 'checked' (idensity=1) a density map is required and loaded via 
+            the pushbutton 'MassDensity'(sharing same horizontal coordinates with 
+            DetailedDEM), 'TessDensity' (sharing same horizontal coordinates with 
+            TessDEM), and 'CoarseDensity' (sharing same horizontal coordinates with 
+            CoarseDEM). 
+            
+            The constant density assumption is adopted while idensity=0 ('unchecked' 
+            status of 'idensity' checkbox). In that case, no density map is used.
+                      
+- Panel 'Gravitational Field':
+                      All parameters are explained in document user-manual.txt.
+
+- Panel 'Output': select and define the output and report file.
+
+====================================================================================
+                                      Test data
+====================================================================================
+Test data, including computation points, DEM grids for integration and reference 
+output files, are provided in the software package 'TGF-2019.10'. 
+
+Two computation point files are available in folder '.\TGF-2019.10\COM'. 
+'ComPoints_5_points.bin'  with coordinates of five computation points was provided 
+for a quick test, and  'ComPoints.bin' of 576 points were prepared for further 
+testing. 
+
+The DEM grids for this example,
+'DetailedDEM.bin' and 'DetailedREF.bin' for near-zone masses, 
+'TessDEM.bin' and 'TessREF.bin' for tesseroid approximation zone, and 
+'CoarseDEM.bin' and 'CoarseREF.bin' for the far zone, are located in the 
+folder '.\TGF-2019.10\DEM_MASS'.  
+
+====================================================================================
+                     Quick start example with GUI interface
+====================================================================================
+Run the TGF software by calling the file TC_GUI.m. You will see the GUI interface, 
+which provides a clear structure of the software and allows for data input, parameters 
+definition and output results via respective control buttons. 
+
+Press button 'Computation Point' to choose and load the computation file 
+'ComPoints.bin'; With 'Display' button, the computation points will be visualised.
+
+Press buttons 'DetailedDEM' and 'DetailedREF' to load DEM files 'DetailedDEM.bin' and 
+'DetailedREF.bin' respectively. These DEM grids are for integration in the vicinity
+(near-zone) of computation points. These DEM grids and the RTM heights will be 
+displayed by using the buttons  'displayDDEM', 'displayDREF' and 'displayRTM'.
+
+Press buttons 'TessDEM' and 'TessREF' to load 'TessDEM.bin' and 'TessREF.bin' grids 
+for integration in the zone using tesseroid approximation. These DEM grids and the 
+RTM heights can be displayed with 'displayTDEM', 'displayDTREF' and 'displayTRTM'.
+
+Press buttons 'CoarseDEM' and 'CoarseREF' to load 'CoarseDEM.bin' and 'CoarseREF.bin' 
+grids for integration in the far zone with point-mass approximation. These DEM grids 
+and the RTM heights will be displayed by buttons 'displayCDEM', 'displayCTREF' and 
+'displayCRTM'.
+
+Using constant density assumption and define the value of uniform density 
+as 2.67 g/cm^3 in this example. 
+
+Defination of parameters required in the forward modelling procedure in the panel 
+'Gravitational Field'"
+ikind = 2
+itype = 10
+rzones = [0.01, 0.02, 0.10, 0.50];
+flag_earth=0;
+ 
+The output file name can be specified by pressing the button 'Output file', otherwise
+the date and time of the program start will be used as default output file name.
+
+The status of the calculation will be shown in the bottom right corner with blue text.  
+
+====================================================================================
+                     Quick start example using the batch mode
+====================================================================================
+
+After starting Matlab, simply copy and paste the following instructions into the 
+Matlab command window in order to run TGF in batch mode without GUI.
+
+vstpar='RUN';
+ComPoints='.\COM\ComPoints_5_points.bin';
+
+DetailedDEM='.\DEM_MASS\DetailedDEM.bin';
+DetailedREF='.\DEM_MASS\DetailedREF.bin';
+TessDEM='.\DEM_MASS\TessDEM.bin';
+TessREF='.\DEM_MASS\TessREF.bin';
+CoarseDEM='.\DEM_MASS\CoarseDEM.bin';
+CoarseREF='.\DEM_MASS\CoarseREF.bin';
+GlobalDEM=[];
+GlobalREF=[];
+
+idensity = 0;
+e = 2.67;
+CoarseDensity =[];
+MassDensity =[];
+TessDensity=[];
+
+ikind = 2
+itype = 10
+flag_earth=1;
+rzones = [0.01, 0.02, 0.10, 0.50];
+
+outname='test_BATCH_out';
+
+
+TGF_GUI (vstpar,ComPoints, DetailedDEM, DetailedREF, MassDensity, TessDEM, TessREF,... 
+TessDensity, CoarseDEM, CoarseREF, CoarseDensity,GlobalDEM,GlobalREF, outname, ...
+ikind, itype,idensity, flag_earth,rzones, e);
+
+The detailed description of the input variables can be found in the user manual.
+
+====================================================================================
+                        Output results and reference values
+====================================================================================
+Output files with pre-computed reference values for our examples are found in folder
+ '.\TGF-2019.10\OUTFILE'. The file 'out_5_points.dat' gives reference values 
+of ten gravitational field elements at computation points 'ComPoints_5_points.bin', 
+and detailed information of inputs, parameters, and computation time of the 
+calculation are defined in the report file 'out_5_points_report.dat'. Accordingly, 
+reference results for the input file with 576 are provided.  
+
+For settings used in the computation run and units of the output quantities, please
+refer the report file.
+
+The TGF software-generated files contain the date and time of the computation run 
+as filename (e.g., 20191028_153715.dat and 20191028_153715_report.txt), unless 
+different filenames were chosen.
+
+====================================================================================
